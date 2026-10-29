@@ -38,6 +38,8 @@ header{display:flex;align-items:center;justify-content:space-between;padding:14p
 .sz span{border:1px solid var(--ln);padding:4px 10px;font-size:13px;text-align:center}
 .sz span.x{color:var(--rd);border-color:#f0b9b3;text-decoration:line-through;background:#fdf3f2}
 .row{display:flex;gap:8px}.row .btn{flex:1}
+.card{display:flex;flex-direction:column}.card .in{flex:1;display:flex;flex-direction:column}.card .in .row{margin-top:auto}.card .im,.card h3{cursor:pointer}
+@media(max-width:700px){.card h3{font-size:13px;line-height:1.5;min-height:3em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.card .ct{font-size:11px}.price{font-size:14px}.stock{font-size:11px;margin:2px 0 6px}.sz{gap:4px;margin-bottom:8px}.sz span{padding:2px 7px;font-size:11px}.sz span small{display:none}.row .btn.o{display:none}.row .btn{padding:9px 4px;font-size:13px}}
 .feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));border-top:1px solid var(--ln);border-bottom:1px solid var(--ln);margin:0 6%}
 .feat div{padding:30px;text-align:center;border-inline-start:1px solid var(--ln)}.feat p{color:var(--mu);font-size:14px}
 footer{text-align:center;padding:50px 20px;color:var(--mu);font-size:14px}footer .logo{color:var(--tx);display:block;margin-bottom:6px}
@@ -179,8 +181,8 @@ function render(){
  const l=L().filter(p=>(fCat=='الكل'||p.cat==fCat)&&(fCond=='الكل'||p.cond==fCond));
  $('grid').innerHTML=l.length?l.map(p=>{
   const a=avail(p),tot=a.reduce((s,x)=>s+x.q,0);
-  return `<div class="card"><div class="im" style="background-image:url(${(p.imgs||[])[0]||''})"><span class="tag">${esc(p.cond)}</span></div>
-  <div class="in"><div class="ct">${esc(p.cat)}</div><h3>${esc(p.name)}</h3><div class="price">${fmt(p.price)}</div>
+  return `<div class="card"><div class="im" onclick="openP('${p.id}')" style="background-image:url(${(p.imgs||[])[0]||''})"><span class="tag">${esc(p.cond)}</span></div>
+  <div class="in"><div class="ct">${esc(p.cat)}</div><h3 onclick="openP('${p.id}')">${esc(p.name)}</h3><div class="price">${fmt(p.price)}</div>
   <div class="stock">${tot?'المتوفر: '+tot+' قطع':'نفدت الكمية'}</div>
   <div class="sz">${(p.sizes||[]).map(x=>`<span class="${x.q>0?'':'x'}">${esc(x.s)}${x.q>0?`<br><small>${x.q} قطع</small>`:''}</span>`).join('')}</div>
   <div class="row"><button class="btn o" onclick="openP('${p.id}')">التفاصيل</button><button class="btn" ${tot?'':'disabled'} onclick="openP('${p.id}')">${tot?'أضف للسلة':'غير متوفر'}</button></div></div></div>`}).join(''):'<p>لا توجد منتجات حالياً.</p>';
